@@ -84,7 +84,7 @@ def _get_data(m, kind="state"):
         orth_data = m.layers.orth.state.detach().cpu()
         lex_data = m.layers.lex.state.detach().cpu()
         sem_data = m.layers.sem.state.detach().cpu()
-    elif kind == "reconstruction":
+    elif kind == "prediction":
         orth_data = m.layers.orth.reconstruction.detach().cpu()
         lex_data = m.layers.lex.reconstruction.detach().cpu()
         sem_data = m.layers.sem.reconstruction.detach().cpu()
@@ -101,9 +101,9 @@ def run_model_batch(words, n_steps=40, plot="state"):
         raise ValueError("The parameter `word` should be a list of strings.")
     if len(words) < 1:
         raise ValueError("`words` list is empty.")
-    if plot not in ["state", "reconstruction", "prederr"]:
+    if plot not in ["state", "prediction", "prederr"]:
         raise ValueError(
-            "`plot` should be one of: 'state', 'reconstruction', 'prederr'"
+            "`plot` should be one of: 'state', 'prediction', 'prederr'"
         )
     m.reset(batch_size=len(words))
     data = list()
@@ -129,9 +129,9 @@ def run_model(word, n_steps=40, plot="state"):
     """Run the model on a given word."""
     if not isinstance(word, str):
         raise ValueError("The parameter `word` should be a single string.")
-    if plot not in ["state", "reconstruction", "prederr"]:
+    if plot not in ["state", "prediction", "prederr"]:
         raise ValueError(
-            "`plot` should be one of: 'state', 'reconstruction', 'prederr'"
+            "`plot` should be one of: 'state', 'prediction', 'prederr'"
         )
     fig, axes = plt.subplots(
         ncols=3, width_ratios=[0.3, 1, 1], figsize=(11, 5), layout="constrained"
