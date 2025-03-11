@@ -3,5 +3,6 @@ numpy
 tqdm
 -i https://download.pytorch.org/whl/cpu
 torch
+-i https://download.pytorch.org/whl/cpu
 torchvision
 https://github.com/wmvanvliet/torch-pcdim/archive/refs/heads/main.zip
