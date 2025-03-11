@@ -1,7 +1,7 @@
--i https://download.pytorch.org/whl/cpu
 matplotlib
 numpy
+tqdm
+-i https://download.pytorch.org/whl/cpu
 torch
 torchvision
-tqdm
 https://github.com/wmvanvliet/torch-pcdim/archive/refs/heads/main.zip
