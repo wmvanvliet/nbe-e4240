@@ -1,4 +1,4 @@
- -i https://download.pytorch.org/whl/cpu
+-i https://download.pytorch.org/whl/cpu
 matplotlib
 numpy
 torch
