@@ -1,15 +1,15 @@
-"""Run a stimulation with the predictive coding model on the GPU and plot the results.
-
-This script reproduces Figures 5 and 6A of:
+"""Run a stimulation with the predictive coding model and plot the results.
 
 Nour Eddine, Samer, Trevor Brothers, Lin Wang, Michael Spratling, and Gina R. Kuperberg.
 "A Predictive Coding Model of the N400". bioRxiv, 11 April 2023.
 https://doi.org/10.1101/2023.04.10.536279.
+
+Author: Marijn van Vliet <w.m.vanvliet@gmail.com>
 """
 
 import numpy as np
 import torch
-from IPython.display import HTML
+from IPython.display import HTML  # noqa
 from matplotlib import animation
 from matplotlib import pyplot as plt
 from tqdm.notebook import tqdm, trange
@@ -30,48 +30,6 @@ weights = get_weights(data_path)
 m = N400Model(weights, batch_size=batch_size).cpu()
 torch.set_num_threads(1)
 init_state = m.state_dict()
-
-# # Grab the list of words in the experiment. We will use only the first 512 as inputs.
-# with open(f"{data_path}/1579words_words.txt") as f:
-#     lex = f.read().strip().split("\n")
-# input_batch = lex[:batch_size]  # only use the first 512 words to test the model
-#
-# lex_sem_state = list()
-# lex_sem_reconstruction = list()
-# lex_sem_prederr = list()
-# n_steps = 1000
-# for i in range(n_steps):
-#     if i < n_pre_iterations:
-#         m("zeros")
-#     else:
-#         m(input_batch)
-#     lex_sem_state.append(
-#         (
-#             m.layers.lex.state.detach().sum(axis=1)
-#             + m.layers.sem.state.detach().sum(axis=1)
-#         )
-#         .mean(axis=0)
-#         .cpu()
-#     )
-#     lex_sem_reconstruction.append(
-#         (
-#             m.layers.lex.reconstruction.detach().sum(axis=1)
-#             + m.layers.sem.reconstruction.detach().sum(axis=1)
-#         )
-#         .mean(axis=0)
-#         .cpu()
-#     )
-#     lex_sem_prederr.append(
-#         (
-#             m.layers.lex.bu_err.detach().sum(axis=1)
-#             + m.layers.sem.bu_err.detach().sum(axis=1)
-#         )
-#         .mean(axis=0)
-#         .cpu()
-#     )
-# lex_sem_state = np.array(lex_sem_state)
-# lex_sem_reconstruction = np.array(lex_sem_reconstruction)
-# lex_sem_prederr = np.array(lex_sem_prederr)
 
 store = np.load("data/precomputed_lex_sem_512_words.npz")
 
@@ -96,15 +54,28 @@ def _get_data(m, kind="state"):
 
 
 def run_model_batch(words, n_steps=40, plot="state"):
-    """Run the model on the given words."""
+    """Run the model on a batch of words.
+
+    Parameters
+    ----------
+    words : list of str
+        The words to run through the model.
+    n_steps : int
+        The number of steps to run the simulation for.
+    plot : "state" | "prediction" | "prederr"
+        What aspect of the model to plot.
+
+    Returns
+    -------
+    fig : matplotlib.Figure
+        The matplotlib figure.
+    """
     if not isinstance(words, list):
         raise ValueError("The parameter `word` should be a list of strings.")
     if len(words) < 1:
         raise ValueError("`words` list is empty.")
     if plot not in ["state", "prediction", "prederr"]:
-        raise ValueError(
-            "`plot` should be one of: 'state', 'prediction', 'prederr'"
-        )
+        raise ValueError("`plot` should be one of: 'state', 'prediction', 'prederr'")
     m.reset(batch_size=len(words))
     data = list()
     for i in trange(n_steps):
@@ -126,13 +97,26 @@ def run_model_batch(words, n_steps=40, plot="state"):
 
 
 def run_model(word, n_steps=40, plot="state"):
-    """Run the model on a given word."""
+    """Run the model on a given word.
+
+    Parameters
+    ----------
+    word : str
+        The word to run through the model.
+    n_steps : int
+        The number of steps to run the simulation for.
+    plot : "state" | "prediction" | "prederr"
+        What aspect of the model to plot.
+
+    Returns
+    -------
+    anim : matplotlib.animation.FuncAnimation
+        The matplotlib animation.
+    """
     if not isinstance(word, str):
         raise ValueError("The parameter `word` should be a single string.")
     if plot not in ["state", "prediction", "prederr"]:
-        raise ValueError(
-            "`plot` should be one of: 'state', 'prediction', 'prederr'"
-        )
+        raise ValueError("`plot` should be one of: 'state', 'prediction', 'prederr'")
     fig, axes = plt.subplots(
         ncols=3, width_ratios=[0.3, 1, 1], figsize=(11, 5), layout="constrained"
     )
@@ -186,5 +170,6 @@ def run_model(word, n_steps=40, plot="state"):
         fig, animate, frames=n_steps, interval=100, blit=False, repeat=True
     )
     return anim
+
 
 print("Everything is loaded, you're all good to go!")

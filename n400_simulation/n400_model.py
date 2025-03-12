@@ -181,27 +181,3 @@ class N400Model(PCModel):
         lex_prederr = self.layers.lex.bu_err.detach().cpu().sum(axis=1)
         sem_prederr = self.layers.sem.bu_err.detach().cpu().sum(axis=1)
         return torch.mean(lex_prederr + sem_prederr).item()
-
-    def get_lex_sem_act(self):
-        """Get current sum lexico-semantic activation across the batch.
-
-        Returns
-        -------
-        lex_sem_act : float
-            The total lexico-semantic activation.
-        """
-        lex_act = self.layers.lex.state.detach().cpu().sum(axis=1)
-        sem_act = self.layers.sem.state.detach().cpu().sum(axis=1)
-        return torch.mean(lex_act + sem_act).item()
-
-    def get_lex_sem_rec(self):
-        """Get current sum lexico-semantic reconstruction activation the batch.
-
-        Returns
-        -------
-        lex_sem_act : float
-            The total lexico-semantic reconstructionactivation.
-        """
-        lex_rec = self.layers.lex.reconstruction.detach().cpu().sum(axis=1)
-        sem_rec = self.layers.sem.reconstruction.detach().cpu().sum(axis=1)
-        return torch.mean(lex_rec + sem_rec).item()
