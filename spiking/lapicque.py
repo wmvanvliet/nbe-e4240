@@ -49,6 +49,7 @@ plt.plot(t, V_LIF_store)
 plt.xlabel("Time (ms)")
 plt.ylabel("Membrane Potential (mV)")
 plt.tight_layout()
-plt.savefig("C:/Users/wmvan/Downloads/LIF.png", dpi=200)
-# for x in spike_times:
-#     plt.axvline(x, color="black")
+# Annotate plot with spike timings
+for x in spike_times:
+    plt.axvline(x, color="black")
+plt.savefig("LIF.png", dpi=200)
