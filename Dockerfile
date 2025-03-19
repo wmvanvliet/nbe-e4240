@@ -27,6 +27,8 @@ USER $NB_USER
 RUN pip install matplotlib numpy tqdm ipywidgets
 RUN pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 RUN pip install https://github.com/wmvanvliet/torch-pcdim/archive/refs/heads/main.zip
+RUN pip install pymc
+RUN pip install hssm
 
 # Clone the repository. First fetch the hash of the latest commit, which will
 # invalidate docker's cache when new things are pushed to the repository. See:
