@@ -9,3 +9,5 @@ You can run the predictive coding model exercise by clicking on the button below
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/wmvanvliet/nbe-e4240/HEAD?urlpath=%2Fdoc%2Ftree%2Fn400_simulation%2Fpredictive_coding.ipynb)
 
 The Leaky Integrate and Fire (LIF) model and the Hodgekin and Huxley (HH) model can be found in the `spiking` folder.
+
+The Drift Diffusion Model (DDM) can be found in the `dmm` folder.
